@@ -10,7 +10,7 @@ const config: Config = {
    * Room name used by the server upon startup. The room name can later be
    * changed through the console while the server is running.
    */
-  roomNameOnStartup: 'Manifold Server',
+  roomNameOnStartup: 'bonjx.io',
 
   /**
    * Password used by the server upon startup. Leave as `null` to make

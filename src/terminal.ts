@@ -3,6 +3,7 @@ import ManifoldServer from './server';
 import * as OUT from './outPacketIds';
 import fs from 'fs';
 import columnify from 'columnify';
+import chalk from 'chalk';
 import { Config } from './types';
 
 interface TerminalCommand {
@@ -11,12 +12,21 @@ interface TerminalCommand {
   callback: (cmd: string[], server: ManifoldServer) => void;
 }
 
+function log(message: string, color: string) {
+  // @ts-ignore
+  console.log(chalk[color](message));
+}
+
+function isID(cmd: string) {
+  return !/[^0-9]+/.test(cmd);
+}
+
 function getPlayerId(cmd: string, server: ManifoldServer) {
-  if (!/[^0-9]+/.test(cmd) && server.playerSockets[parseInt(cmd)]) {
+  if (isID(cmd) && server.playerSockets[parseInt(cmd)]) {
     return parseInt(cmd);
   } else {
     for (let i = 0; i < server.playerInfo.length; i++) {
-      if (server.playerInfo[i] && server.playerInfo[i].userName == cmd) return i;
+      if (server.playerInfo[i] && server.playerInfo[i].userName.toLowerCase() == cmd.toLowerCase()) return i;
     }
   }
 
@@ -31,7 +41,7 @@ const availableCommands: Record<string, TerminalCommand> = {
       const id = getPlayerId(cmd[1], server);
 
       if (cmd[1] && id == -1) {
-        console.log(`${cmd[1]} is not a valid player name or id.`);
+        log(`${cmd[1]} is not a valid player name or id.`, 'red');
         return;
       }
 
@@ -43,10 +53,10 @@ const availableCommands: Record<string, TerminalCommand> = {
       // log host transfer message
       if (id == -1) {
         server.logChatMessage('* The game no longer has a host');
-        console.log('The game no longer has a host.');
+        log('The game no longer has a host.', 'yellow');
       } else {
         server.logChatMessage(`* ${server.playerInfo[server.hostId].userName} is now the game host`);
-        console.log(`${server.playerInfo[id].userName} (id ${id}) is now the game host.`);
+        log(`${server.playerInfo[id].userName} (id ${id}) is now the game host.`, 'green');
       }
     },
   },
@@ -57,13 +67,13 @@ const availableCommands: Record<string, TerminalCommand> = {
       const id = getPlayerId(cmd[1], server);
 
       if (id == -1) {
-        console.log(`${cmd[1]} is not a valid player name or id.`);
+        log(`${cmd[1]} is not a valid player name or id.`, 'red');
         return;
       }
 
       server.banPlayer(id);
 
-      console.log('Banned.');
+      log(`Banned ${cmd[1]}!`, 'green');
     },
   },
   unban: {
@@ -73,7 +83,7 @@ const availableCommands: Record<string, TerminalCommand> = {
       const index = server.banList.usernames.indexOf(cmd[1]);
 
       if (index == -1) {
-        console.log(`${cmd[1]} is not in the ban list.`);
+        log(`${cmd[1]} is not in the ban list.`, 'red');
         return;
       }
 
@@ -83,6 +93,8 @@ const availableCommands: Record<string, TerminalCommand> = {
       fs.writeFileSync('./banlist.json', JSON.stringify(server.banList), {
         encoding: 'utf8',
       });
+
+      log(`Unbanned ${cmd[1]}!`, 'green');
     },
   },
   players: {
@@ -90,7 +102,7 @@ const availableCommands: Record<string, TerminalCommand> = {
     description: 'Show a list of all the players in the room.',
     callback(cmd, server) {
       if (server.playerAmount == 0) {
-        console.log("There isn't anyone connected to the server!");
+        log("There isn't anyone connected to the server!", 'yellow');
         return;
       }
 
@@ -111,12 +123,12 @@ const availableCommands: Record<string, TerminalCommand> = {
         });
       }
 
-      console.log(
+      log(
         columnify(playerList, {
           columnSplitter: '   ',
           maxWidth: 20,
         }),
-      );
+      "green");
     },
   },
   roomname: {
@@ -125,7 +137,7 @@ const availableCommands: Record<string, TerminalCommand> = {
       "Change the room's name. The new name is not permanent and will change back to roomNameOnStartup when the server is restarted. Remember to use quotes if the room name you want to use has spaces.",
     callback(cmd, server) {
       server.roomName = cmd[1];
-      console.log(`The room name is now "${cmd[1]}".`);
+      log(`The room name is now "${cmd[1]}".`, 'green');
     },
   },
   roompass: {
@@ -135,10 +147,10 @@ const availableCommands: Record<string, TerminalCommand> = {
     callback(cmd, server) {
       if (cmd[1]) {
         server.password = cmd[1];
-        console.log(`The room password is now "${cmd[1]}".`);
+        log(`The room password is now "${cmd[1]}".`, 'green');
       } else {
         server.password = null;
-        console.log(`The room password has been cleared.`);
+        log(`The room password has been cleared.`,'green');
       }
     },
   },
@@ -153,19 +165,50 @@ const availableCommands: Record<string, TerminalCommand> = {
     usage: 'close',
     description: 'Close the server.',
     callback: function () {
-      console.log('Closing...');
+      log('Closing...', 'blue');
       process.exit(0);
     },
   },
-  help: {
-    usage: 'help',
-    description: 'Show this list of commands.',
-    callback: function () {
-      for (const command in availableCommands) {
-        console.log('');
-        console.log(availableCommands[command].usage);
-        console.log(availableCommands[command].description);
+  fakesay: {
+    usage: 'fakesay [player name or id] [message]',
+    description: 'Send a fake chat message from a user.',
+    callback: function (cmd, server) {
+      const id = getPlayerId(cmd[1], server);
+
+      if (cmd[1] && id == -1) {
+        log(`${cmd[1]} is not a valid player name or id.`,'red');
+        return;
       }
+
+      const message = cmd.slice(2).join(' ');
+
+      server.io.to('main').emit(OUT.CHAT_MESSAGE, id, message);
+      log(`Sent message from ${server.playerInfo[id].userName}`, 'green');
+    },
+  },
+  help: {
+    usage: 'help [command]',
+    description: 'Show this list of commands.',
+    callback: function (cmd) {
+      if(cmd.length > 1) {
+        if(availableCommands[cmd[1]]) {
+          log(availableCommands[cmd[1]].usage, 'blue');
+          log(availableCommands[cmd[1]].description, 'blue');
+          return;
+        }
+      }
+
+      log('Available commands:', 'blue');
+      log('Run help [command] for more.', 'blue');
+      // for (const command in availableCommands) {
+      //   log(availableCommands[command].usage.split(' ')[0], 'blue');
+      // }
+      log(columnify(Object.keys(availableCommands).map((command) => (
+        {
+          command: command,
+          usage: availableCommands[command].usage,
+        }
+      )), { columnSplitter: '   ', maxWidth: 80 }), 'blue');
     },
   },
 };
@@ -184,7 +227,7 @@ export default class ManifoldTerminal {
   }
 
   async start() {
-    console.log(
+    log(
       [
         `| Manifold Server v${require('../package.json').version}`,
         `| Live at port ${this.server.config.port}`,
@@ -192,11 +235,11 @@ export default class ManifoldTerminal {
         '| Type "help" to show a list of commands.',
         '',
       ].join('\n'),
-    );
+    "blue");
 
     while (true) {
       const userInput = await new Promise<string>((resolve) => {
-        this.readlineInterface.question('> ', resolve);
+        this.readlineInterface.question(chalk.magenta('> '), resolve);
       });
 
       const cmd = this.parseCommand(userInput);
@@ -204,10 +247,10 @@ export default class ManifoldTerminal {
       if (availableCommands[cmd[0]]) {
         availableCommands[cmd[0]].callback(cmd, this.server);
       } else {
-        console.log(`${cmd[0]} is not a valid command.`);
+        log(`${cmd[0]} is not a valid command.`,'red');
       }
 
-      console.log('');
+      log('', 'blue');
     }
   }
 
