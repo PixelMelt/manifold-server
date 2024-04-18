@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsx index.tsx",
+    "start": "tsx index.ts",
     "build": "tsc && cp ./package.json ./build/package.json",
     "runbuild": "node ./build/index.js"
   },

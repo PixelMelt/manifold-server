@@ -79,6 +79,13 @@ export type Config = {
   roomNameOnStartup: string;
 
   /**
+   * Message of the day (motd) that is displayed to players when they load the rooms list.
+   * The motd can be disabled by setting `motd` to false.
+   */
+  motd: boolean,
+  motdMessages: array,
+
+  /**
    * Password used by the server upon startup. Leave as `null` to make
    * the server start with no password. The password can later be changed
    * through the console while the server is running.

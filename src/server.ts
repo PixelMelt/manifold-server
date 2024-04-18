@@ -82,7 +82,7 @@ export default class ManifoldServer {
     this.expressApp.get('/', (_req, res) => {
       res.json({
         isBonkServer: true,
-        roomname: this.roomName,
+        roomname: this.getRoomName(),
         password: this.password ? 1 : 0,
         players: this.playerAmount,
         maxplayers: this.config.maxPlayers,
@@ -234,6 +234,14 @@ export default class ManifoldServer {
     this.server.listen(3000, () => {
       this.terminal.start();
     });
+  }
+
+  getRoomName() {
+    if(!this.config.motd) {
+      return this.roomName;
+    }
+    // randomly select a message from the motd messages
+    return this.roomName + " - " + this.config.motdMessages[Math.floor(Math.random() * this.config.motdMessages.length)];
   }
 
   processRatelimit(socket: socketIO.Socket, actionType: keyof RatelimitRestrictions) {

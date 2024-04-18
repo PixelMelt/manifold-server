@@ -9,6 +9,7 @@ Why not submit PRs to the original repository? This repository may not be as sta
 - **Host password**: You can set a password that when said in chat, gives that player host permissions.
 - **Docker support**: You can run the server in a Docker container for easy use with reverse proxies such as LinuxServer.io's [SWAG container](https://hub.docker.com/r/linuxserver/swag).
 - **FakeSay**: You can force a player to say messages in chat.
+- **Custom MOTD**: You can set any number of messages to be displayed when a player opens the server list.
 - **General command changes**
 - **Terminal coloring** 
 
