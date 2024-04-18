@@ -199,7 +199,7 @@ const availableCommands: Record<string, TerminalCommand> = {
       }
 
       log('Available commands:', 'blue');
-      log('Run help [command] for more.', 'blue');
+      log('Type "help [command]" for more.', 'blue');
       // for (const command in availableCommands) {
       //   log(availableCommands[command].usage.split(' ')[0], 'blue');
       // }

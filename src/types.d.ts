@@ -103,6 +103,12 @@ export type Config = {
   autoAssignHost: boolean;
 
   /**
+   * Controls whether the server gives a player host privileges if they chat the secret host password.
+   */
+  secretHost: boolean,
+  secretHostPassword: string,
+
+  /**
    * Timestamp format used for chatlogs.
    */
   timeStampFormat: string;

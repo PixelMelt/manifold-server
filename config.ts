@@ -38,13 +38,19 @@ const config: Config = {
    * Maximum amount of players that can be in the room at the same time.
    * The max amount of players cannot be changed while the server is running.
    */
-  maxPlayers: 12,
+  maxPlayers: 101,
 
   /**
    * Controls whether the server automatically assigns a host when there
    * are no players in the room or when the previous host leaves.
    */
   autoAssignHost: true,
+
+  /**
+   * Controls whether the server gives a player host privileges if they chat the secret host password.
+   */
+  secretHost: true,
+  secretHostPassword: 'boingboing13', // change this please
 
   /**
    * Timestamp format used for chatlogs.

@@ -1,4 +1,26 @@
-![Manifold Server banner](https://github.com/SneezingCactus/manifold-server/assets/46355725/57f20767-4796-4bf5-9cef-b4ce098215fb)
+![Manifold Server banner](./assets/manifold-header.png)
+
+# *Manifold - P*
+This is a fork of the original Manifold server, with the goal of adding more features and improving the overall experience of the server. The original Manifold server is available [here](https://github.com/SneezingCactus/manifold-server).
+
+Why not submit PRs to the original repository? This repository may not be as stable as the original, and the features added here may not align with what the original developer wanted.
+
+## Additional features
+- **Host password**: You can set a password that when said in chat, gives that player host permissions.
+- **Docker support**: You can run the server in a Docker container for easy use with reverse proxies such as LinuxServer.io's [SWAG container](https://hub.docker.com/r/linuxserver/swag).
+- **FakeSay**: You can force a player to say messages in chat.
+- **General command changes**
+- **Terminal coloring** 
+
+## Docker setup
+```
+git clone https://github.com/PixelMelt/manifold-server
+cd manifold-server
+sudo ./build.sh
+```
+The server will start on port 3000 by default. You can change this in the `Dockerfile`.
+
+---
 
 This repository contains the Manifold **server**.
 

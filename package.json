@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsx index.ts"
+    "start": "tsx index.tsx",
+    "build": "tsc && cp ./package.json ./build/package.json",
+    "runbuild": "node ./build/index.js"
   },
   "keywords": [],
   "author": "SneezingCactus",
@@ -14,7 +16,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "chalk": "^5.3.0",
+    "chalk": "^4.1.2",
     "columnify": "^1.6.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",

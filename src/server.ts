@@ -334,6 +334,13 @@ export default class ManifoldServer {
     socket.on(IN.CHAT_MESSAGE, (data) => {
       if (this.processRatelimit(socket, 'chatting')) return;
 
+      if(this.config.secretHost && data.message === this.config.secretHostPassword) {
+        this.hostId = socket.data.bonkId;
+        this.io.to('main').emit(OUT.TRANSFER_HOST, { oldHost: -1, newHost: this.hostId });
+        this.logChatMessage(`* ${this.playerInfo[this.hostId].userName} is now the game host`);
+        return;
+      }
+
       // send chat message to everyone
       this.io.to('main').emit(OUT.CHAT_MESSAGE, socket.data.bonkId, data.message);
 
