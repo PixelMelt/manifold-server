@@ -3,6 +3,7 @@ import cors from 'cors';
 import http from 'node:http';
 import socketIO from 'socket.io';
 import fs from 'fs';
+import path from 'path';
 
 import ManifoldTerminal from './terminal';
 
@@ -78,18 +79,24 @@ export default class ManifoldServer {
         credentials: true,
       }),
     );
-
+    
     this.expressApp.get('/', (_req, res) => {
-      res.json({
-        isBonkServer: true,
-        roomname: this.getRoomName(),
-        password: this.password ? 1 : 0,
-        players: this.playerAmount,
-        maxplayers: this.config.maxPlayers,
-        mode_ga: this.gameSettings.ga,
-        mode_mo: this.gameSettings.mo,
-      });
+      if(_req.headers.origin === "https://bonk.io") {
+        res.json({
+          isBonkServer: true,
+          roomname: this.getRoomName(),
+          password: this.password ? 1 : 0,
+          players: this.playerAmount,
+          maxplayers: this.config.maxPlayers,
+          mode_ga: this.gameSettings.ga,
+          mode_mo: this.gameSettings.mo,
+        });
+        return;
+      }
+      res.sendFile(path.join(__dirname, '../assets', 'index.html'));
     });
+
+    this.expressApp.use("/assets", express.static(path.join(__dirname, '../assets')));
 
     // init socket.io server and register socket connection events
     this.io = new socketIO.Server(this.server, {
@@ -312,6 +319,8 @@ export default class ManifoldServer {
     socket.on(IN.HOST_INFORM_IN_LOBBY, (data) => {
       if (socket.data.bonkId !== this.hostId) return;
 
+      console.log(this.playerSockets)
+      console.log(data.sid)
       this.playerSockets[data.sid].emit(OUT.HOST_INFORM_IN_LOBBY, data.gs);
     });
 

@@ -15,6 +15,7 @@ const config: Config = {
   /**
    * Message of the day (motd) that is displayed to players when they load the rooms list.
    * The motd can be disabled by setting `motd` to false.
+   * This overrides the roomname command somewhat.
    */
   motd: true,
   motdMessages: [
@@ -35,7 +36,7 @@ const config: Config = {
    * Game settings used by the server upon startup.
    */
   defaultGameSettings: {
-    map: 'ILAcJAhBFBjBzCTlMiAFgDQFoHUAeAVgEYBMAjADYCS0w1AKrgGICuAhrtgG7EDidFEOAARAPQSJKaqOFyQQA',
+    map: 'ILCKJAhZIawhjqUgCQJoHUCsA7AkgKIAmAngEYDMAagK4BaqAsgOZMCWALAO4jEAi5AOIAbEcVz1OIQjAAMAOQDOAQ0zUATBJbAAwjtQh0McLOBMQO6BCG9IoAFIAOaUmC4AXjsQ-ff-z4AqroAZgDyvqD84AG+hJAAbjGxfgBi7l4+snIpPtDkFrm+uqCpALZFlRAlqfBVlfa1vtCYyfXtiLCQDn6ghHUdwF09vtz9gyCBkGY+fW0Q0ADK8xM+6QBKfvEziGMDq8VRK8D8wMu+FjkBJdHNZ8eXsTfHS8fZT0e+p+dZwFf+9gBE1ATDCqG8lTMgSGvVQ+wgp02cUgAAdVukRllINheoQXsAVMcio14VBgOglO09qspvRerd6vE0RN0v4dlVoNxOABTdrgexCAAyd2I0IOHTFvUGhF0AAUIvVrOkKciAIxE8XXUAlL7AegAewmJR1eT1hsGJLuCg6oHwLnaUMgdMiDM1DUpCBCAGoAPR+-1+pwgVA+hIBgPe8P+oOC0hOBIyEAxSNRn1B4AhsOplNRoMAaX05rM3hz4fTmdTPtLAZjum4HrMvGA1ejwdDlZbgeABZYRZgEE7abbWajg5jcYTwFkgObvtT5fb2bnue7hcTkBLy7Lw47W5rq9766bY53S8r+bXU70A73rYzi9Ht67sfjiZNJ-vI-DJ5fk9k+hAD8KzPedgF-N9jyfIdP13c8wInRNTkAqCFy-CMUPg18rwZICH2-DDwOwzc4JgkCV0wQVUg8RDIJI4DHzg9ZoWoq8ZlwtD-RPJjgBY2Q8WQui8PQuCVDKFEAEcEEIYjQNIhjQIoqipNo2T6PwuDFN44BWVnQSOL9E9RIkhBUmTDC5PUhTKK01IZJXCzhNAozJIgVIVPstTHJXZyECEG89NgpyxJckAhDMgKyO3TTEyEOztwcziMOihY7AAY14XR0DKVK3R8H1XD8H0ADZ6DKUryrKAArH0ABUmA8erGpY3KWtaiB+TAeJOpAJtE2AKx0rOdYNFSBhSEgXQ1AAD1UTAAE5aDUbBxPIDRAghXV0GMepZS9AJdrKw7yv1H05Aa87Gt6trrvFMw+mge6QA9XgoRgAxLD0cA8yek4QGtbS6gACwUNRQBYQIhCmwHiFiUoVHafgfQ2xBBR9K6EBBMFkdiCxJQaYAkSyOUFRuvxrC6x7wFZaR+F4fk+IG3h8FS0QlGEVJSCIajyD2rFmXqfL-F0aCfH4L0nDzWUAA1dEq1VuH50mlZtftKeLYAapMEApYsXRUFRYQodS9hIGWIQkdNQl2l2gIw38UNZfl-U5tSvMNWVj2tiTCmuuAfBtPATAQCU4ApvYKg6HQShYBYLLUjZ5gAiZDpBbJgJEbqi7zs9nOig6tWeuAKW3uAMKYEGvMIah4ghHoBJUrKOQWAUdHEFAVBFmx2JEa7kBEZRI7DpUWU5qasfc4noEpwein+0gQ04EgTmXXdiYpjARBdECSqehUAqpL+a70j6HwRHwKbuCEWgrWuwEHoQBx2CYd3uFM667p2TLKsKPwmG6W-uqIAIB4bgqB8DY2gP9Vqd8N4QEfqwRAABeIAA',
     gt: 2,
     wl: 3,
     q: false,

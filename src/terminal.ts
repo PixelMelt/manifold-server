@@ -4,7 +4,7 @@ import * as OUT from './outPacketIds';
 import fs from 'fs';
 import columnify from 'columnify';
 import chalk from 'chalk';
-import { Config } from './types';
+import { Config, Player } from './types';
 
 interface TerminalCommand {
   usage: string;

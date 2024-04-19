@@ -12,6 +12,7 @@ Why not submit PRs to the original repository? This repository may not be as sta
 - **Custom MOTD**: You can set any number of messages to be displayed when a player opens the server list.
 - **General command changes**
 - **Terminal coloring** 
+- **Landing site**: A simple landing site that displays the servers url.
 
 ## Docker setup
 ```
