@@ -319,8 +319,6 @@ export default class ManifoldServer {
     socket.on(IN.HOST_INFORM_IN_LOBBY, (data) => {
       if (socket.data.bonkId !== this.hostId) return;
 
-      console.log(this.playerSockets)
-      console.log(data.sid)
       this.playerSockets[data.sid].emit(OUT.HOST_INFORM_IN_LOBBY, data.gs);
     });
 
